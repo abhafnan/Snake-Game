@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <!-- Background tile -->
+  <rect width="64" height="64" rx="12" fill="#0a0f12"/>
+
+  <!-- Snake head -->
+  <g transform="translate(12,12)">
+    <rect x="0" y="0" width="40" height="40" rx="8" fill="#ffffff" stroke="#dfe6e6" stroke-width="2"/>
+
+    <!-- Eyes -->
+    <circle cx="14" cy="16" r="4" fill="#000000"/>
+    <circle cx="26" cy="16" r="4" fill="#000000"/>
+
+    <!-- Pupils -->
+    <circle cx="15.5" cy="17.5" r="1.5" fill="#ffffff"/>
+    <circle cx="27.5" cy="17.5" r="1.5" fill="#ffffff"/>
+
+    <!-- Tongue -->
+    <path d="M22 28 L26 34 L18 34 Z" fill="#ff2e63"/>
+  </g>
+</svg>
