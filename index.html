@@ -1,22 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Realistic Snake Game</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>SNAKE - Classic Arcade Game</title>
     <link rel="stylesheet" href="style.css">
     <link rel="shortcut icon" href="fav.svg" type="image/x-icon">
 </head>
+
 <body>
 
-<h1 class="title">Snake Game</h1>
+    <div id="game-container">
+        <!-- Game Header -->
+        <div class="game-header">
+            <div class="game-title">SNAKE</div>
+        </div>
 
-<div id="score">Score: 0</div>
+        <!-- Score Panel -->
+        <div class="score-panel">
+            <div class="score-item">
+                <div class="score-label">Score</div>
+                <div class="score-value" id="score-val">0</div>
+            </div>
+            <div class="score-item">
+                <div class="score-label">High Score</div>
+                <div class="score-value" id="high-score-val">0</div>
+            </div>
+        </div>
 
-<div id="game-board"></div>
+        <!-- Game Board -->
+        <div id="game-board"></div>
 
-<button id="restartBtn">Restart Game</button>
+        <!-- Start Menu Overlay -->
+        <div id="menu-overlay" class="overlay">
+            <div class="menu-card">
+                <h1>SNAKE</h1>
+                <h3 style="color: var(--text-secondary); margin-bottom: 25px; font-size: 0.9rem; letter-spacing: 2px;">
+                    SELECT MODE</h3>
+                <div class="mode-selector">
+                    <button class="btn mode-btn active" data-mode="classic">CLASSIC</button>
+                    <button class="btn mode-btn" data-mode="zen">ZEN MODE</button>
+                    <button class="btn mode-btn" data-mode="insane">INSANE</button>
+                </div>
+                <button id="start-btn" class="btn btn-primary">START GAME</button>
+            </div>
+        </div>
 
-<script src="script.js"></script>
+        <!-- Game Over Overlay -->
+        <div id="game-over-overlay" class="overlay hidden">
+            <div class="menu-card">
+                <h2 style="color: var(--arcade-magenta); text-shadow: 0 0 20px var(--arcade-magenta);">GAME OVER</h2>
+                <p style="font-size: 1.3rem; margin: 25px 0;">SCORE: <span id="final-score"
+                        style="color: var(--arcade-cyan); font-family: 'Press Start 2P';">0</span></p>
+                <button id="restart-btn" class="btn btn-primary">PLAY AGAIN</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
+
 </html>
