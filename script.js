@@ -72,6 +72,7 @@ function generateObstacles() {
             x: Math.floor(Math.random() * gridSize),
             y: Math.floor(Math.random() * gridSize)
         };
+        // Don't spawn on start position
         if (pos.x !== 10 && !snake.some(s => s.x === pos.x && s.y === pos.y)) {
             obstacles.push(pos);
         }
@@ -116,6 +117,7 @@ function update() {
 
     const head = { x: snake[0].x + direction.x, y: snake[0].y + direction.y };
 
+    // Wall Collision / Wrapping
     if (MODES[gameMode].wrap) {
         if (head.x < 0) head.x = gridSize - 1;
         if (head.x >= gridSize) head.x = 0;
@@ -127,18 +129,20 @@ function update() {
         }
     }
 
+    // Self Collision & Obstacle Collision
     if (snake.some(s => s.x === head.x && s.y === head.y)) return gameOver();
     if (obstacles.some(o => o.x === head.x && o.y === head.y)) return gameOver();
 
     snake.unshift(head);
 
+    // Food Consumption
     if (head.x === food.x && head.y === food.y) {
         const points = food.type === "gold" ? 5 : 1;
         score += points;
         updateScore();
 
         // Create particle effect
-        const particleColor = food.type === "gold" ? "#ffd700" : "#ff2e63";
+        const particleColor = food.type === "gold" ? "#ffd700" : "#ff006e";
         createParticles(food.x, food.y, particleColor);
 
         food = spawnFood();
@@ -156,6 +160,7 @@ function draw() {
     const cellSize = 100 / gridSize;
     board.style.backgroundSize = `${cellSize}% ${cellSize}%`;
 
+    // Draw Obstacles
     obstacles.forEach(o => {
         const el = document.createElement("div");
         el.style.gridColumnStart = o.x + 1;
@@ -164,12 +169,14 @@ function draw() {
         board.appendChild(el);
     });
 
+    // Draw Food
     const foodEl = document.createElement("div");
     foodEl.style.gridColumnStart = food.x + 1;
     foodEl.style.gridRowStart = food.y + 1;
     foodEl.classList.add(food.type === "gold" ? "food-gold" : "food");
     board.appendChild(foodEl);
 
+    // Draw Snake
     snake.forEach((seg, i) => {
         const el = document.createElement("div");
         el.style.gridColumnStart = seg.x + 1;
@@ -180,21 +187,21 @@ function draw() {
 }
 
 function createParticles(x, y, color) {
-    for (let i = 0; i < 8; i++) {
+    for (let i = 0; i < 12; i++) {
         const particle = document.createElement("div");
         particle.style.position = "absolute";
-        particle.style.width = "6px";
-        particle.style.height = "6px";
+        particle.style.width = "4px";
+        particle.style.height = "4px";
         particle.style.borderRadius = "50%";
         particle.style.backgroundColor = color;
         particle.style.boxShadow = `0 0 10px ${color}`;
         particle.style.left = `${(x / gridSize) * 100}%`;
         particle.style.top = `${(y / gridSize) * 100}%`;
         particle.style.pointerEvents = "none";
-        particle.style.zIndex = "999";
+        particle.style.zIndex = "99";
 
-        const angle = (Math.PI * 2 * i) / 8;
-        const velocity = 20 + Math.random() * 10;
+        const angle = (Math.PI * 2 * i) / 12;
+        const velocity = 15 + Math.random() * 15;
         const vx = Math.cos(angle) * velocity;
         const vy = Math.sin(angle) * velocity;
 
@@ -205,8 +212,8 @@ function createParticles(x, y, color) {
         let opacity = 1;
 
         const animate = () => {
-            posX += vx * 0.1;
-            posY += vy * 0.1;
+            posX += vx * 0.05;
+            posY += vy * 0.05;
             opacity -= 0.02;
 
             particle.style.left = posX + "%";
@@ -219,48 +226,9 @@ function createParticles(x, y, color) {
                 particle.remove();
             }
         };
-
         requestAnimationFrame(animate);
     }
 }
-
-function update() {
-    direction = nextDirection;
-    if (direction.x === 0 && direction.y === 0) return;
-
-    const head = { x: snake[0].x + direction.x, y: snake[0].y + direction.y };
-
-    if (MODES[gameMode].wrap) {
-        if (head.x < 0) head.x = gridSize - 1;
-        if (head.x >= gridSize) head.x = 0;
-        if (head.y < 0) head.y = gridSize - 1;
-        if (head.y >= gridSize) head.y = 0;
-    } else {
-        if (head.x < 0 || head.x >= gridSize || head.y < 0 || head.y >= gridSize) {
-            return gameOver();
-        }
-    }
-
-    if (snake.some(s => s.x === head.x && s.y === head.y)) return gameOver();
-    if (obstacles.some(o => o.x === head.x && o.y === head.y)) return gameOver();
-
-    snake.unshift(head);
-
-    if (head.x === food.x && head.y === food.y) {
-        const points = food.type === "gold" ? 5 : 1;
-        score += points;
-        updateScore();
-
-        // Create particle effect
-        const particleColor = food.type === "gold" ? "#ffd700" : "#ff2e63";
-        createParticles(food.x, food.y, particleColor);
-
-        food = spawnFood();
-    } else {
-        snake.pop();
-    }
-}
-
 
 function gameLoop() {
     update();
@@ -311,11 +279,15 @@ function handleSwipe(startX, startY, endX, endY) {
 
 // Responsive sizing
 function resizeBoard() {
-    const margin = 20;
-    const size = Math.min(window.innerWidth - margin, window.innerHeight - margin);
+    const container = document.getElementById("game-container");
+    const containerWidth = container.clientWidth - 40;
+    const containerHeight = container.clientHeight - 200; // Leave space for HUD
+    const size = Math.min(containerWidth, containerHeight, 600);
+
     board.style.width = `${size}px`;
     board.style.height = `${size}px`;
 }
 
 window.addEventListener("resize", resizeBoard);
 resizeBoard();
+setTimeout(resizeBoard, 100); // Delayed fix for mobile layout shifts

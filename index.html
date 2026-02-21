@@ -5,7 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>SNAKE - Classic Arcade Game</title>
-    <link rel="stylesheet" href="style.css">
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Orbitron:wght@400;700;900&display=swap"
+        rel="stylesheet">
+
+    <!-- Styles with Cache Buster -->
+    <link rel="stylesheet" href="style.css?v=1.0.1">
     <link rel="shortcut icon" href="fav.svg" type="image/x-icon">
 </head>
 
@@ -36,8 +43,8 @@
         <div id="menu-overlay" class="overlay">
             <div class="menu-card">
                 <h1>SNAKE</h1>
-                <h3 style="color: var(--text-secondary); margin-bottom: 25px; font-size: 0.9rem; letter-spacing: 2px;">
-                    SELECT MODE</h3>
+                <h3 style="color: var(--text-secondary); margin-bottom: 25px; font-size: 0.8rem; letter-spacing: 2px;">
+                    SELECT DIFFICULTY</h3>
                 <div class="mode-selector">
                     <button class="btn mode-btn active" data-mode="classic">CLASSIC</button>
                     <button class="btn mode-btn" data-mode="zen">ZEN MODE</button>
@@ -51,14 +58,17 @@
         <div id="game-over-overlay" class="overlay hidden">
             <div class="menu-card">
                 <h2 style="color: var(--arcade-magenta); text-shadow: 0 0 20px var(--arcade-magenta);">GAME OVER</h2>
-                <p style="font-size: 1.3rem; margin: 25px 0;">SCORE: <span id="final-score"
-                        style="color: var(--arcade-cyan); font-family: 'Press Start 2P';">0</span></p>
+                <div style="font-size: 1.3rem; margin: 25px 0;">
+                    SCORE: <span id="final-score"
+                        style="color: var(--arcade-cyan); font-family: 'Press Start 2P';">0</span>
+                </div>
                 <button id="restart-btn" class="btn btn-primary">PLAY AGAIN</button>
             </div>
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <!-- Script with Cache Buster -->
+    <script src="script.js?v=1.0.1"></script>
 </body>
 
 </html>
